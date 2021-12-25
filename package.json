@@ -1,0 +1,16 @@
+{
+  "name": "portfolio-server",
+  "version": "1.0.0",
+  "description": "A server for portfolio data",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Abhishek Kumar Upadhyay",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.3"
+  }
+}
