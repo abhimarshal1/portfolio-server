@@ -1,14 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const morgan = require("morgan");
+
+require("dotenv").config();
 
 mongoose.Promise = global.Promise;
 
-const YOUR_MONGODB_URL =
-  "mongodb+srv://rest_user:Qwerty9870@mongo-cluster.ck0mh.mongodb.net/portfolio?retryWrites=true&w=majority";
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT } = process.env;
+
+const MONGODB_URI = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`;
+
+console.log(MONGODB_URI);
 
 mongoose
-  .connect(YOUR_MONGODB_URL, {
+  .connect(MONGODB_URI, {
     useNewUrlParser: true,
   })
   .then(() => {
@@ -21,18 +28,16 @@ mongoose
 
 const app = express();
 
+app.use(cors());
+
+app.use(morgan("combined"));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 
-// app.get("/", (req, res) => {
-//   res.json({ message: "Server is running :D" });
-// });
+require("./app/routes/app.routes.js")(app);
 
-let PORT = 3000;
-
-require('./app/routes/app.routes.js')(app);
-
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+app.listen(DB_PORT, () => {
+  console.log(`Server is listening on port ${DB_PORT}`);
 });
